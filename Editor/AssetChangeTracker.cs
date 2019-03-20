@@ -9,7 +9,7 @@ public class AssetChangeTracker
 
     public void AddListener(Type assetType, TrackedAssetType.IAssetChangeNotifications listener)
     {
-        if (trackedAssetTypes.ContainsKey(assetType))
+        if (!trackedAssetTypes.ContainsKey(assetType))
             trackedAssetTypes[assetType] = new TrackedAssetType(assetType);
 
         trackedAssetTypes[assetType].AddListener(listener);
