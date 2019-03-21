@@ -7,12 +7,30 @@ namespace AssetChangeTracker
 {
 	public class AssetChangeTracker
 	{
+
+		public interface IAssetDatabaseAccess
+		{
+			HashSet<string> GetAssetsOfType(Type assetType);
+			Type GetAssetType(string assetPath);
+		}
+
+		private IAssetDatabaseAccess assetDatabaseAccess;
+
+
 		private Dictionary<Type, TrackedAssetType> trackedAssetTypes = new Dictionary<Type, TrackedAssetType>();
+
+		public AssetChangeTracker(IAssetDatabaseAccess assetDatabaseAccess)
+		{
+			Assert.IsNotNull(assetDatabaseAccess);
+			this.assetDatabaseAccess = assetDatabaseAccess;
+		}
 
 		public void AddListener(Type assetType, TrackedAssetType.IAssetChangeNotifications listener)
 		{
 			if (!trackedAssetTypes.ContainsKey(assetType))
-				trackedAssetTypes[assetType] = new TrackedAssetType(assetType);
+			{
+				trackedAssetTypes[assetType] = new TrackedAssetType(assetType, assetDatabaseAccess.GetAssetsOfType(assetType));
+			}
 
 			trackedAssetTypes[assetType].AddListener(listener);
 		}
@@ -30,7 +48,7 @@ namespace AssetChangeTracker
 		{
 			foreach (string assetPath in assetPaths)
 			{
-				Type assetType = AssetDatabase.GetMainAssetTypeAtPath(assetPath);
+				Type assetType = assetDatabaseAccess.GetAssetType(assetPath);
 				if (trackedAssetTypes.ContainsKey(assetType))
 					trackedAssetTypes[assetType].OnReimported(assetPath);
 			}
@@ -43,7 +61,7 @@ namespace AssetChangeTracker
 				string assetSourcePath = assetSourcePaths[assetIndex];
 				string assetTargetPath = assetTargetPaths[assetIndex];
 
-				Type assetType = AssetDatabase.GetMainAssetTypeAtPath(assetTargetPath);
+				Type assetType = assetDatabaseAccess.GetAssetType(assetTargetPath);
 				if (trackedAssetTypes.ContainsKey(assetType))
 					trackedAssetTypes[assetType].OnMoved(assetSourcePath, assetTargetPath);
 			}

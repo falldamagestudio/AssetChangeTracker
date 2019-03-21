@@ -19,11 +19,9 @@ namespace AssetChangeTracker
 		private HashSet<string> AssetPaths = new HashSet<string>();
 		private HashSet<IAssetChangeNotifications> Listeners = new HashSet<IAssetChangeNotifications>();
 
-		public TrackedAssetType(Type assetType)
+		public TrackedAssetType(Type assetType, HashSet<string> assetPaths)
 		{
-			string[] assetGuids = AssetDatabase.FindAssets(string.Format("t:{0}", assetType));
-			foreach (string assetGuid in assetGuids)
-				AssetPaths.Add(AssetDatabase.GUIDToAssetPath(assetGuid));
+			AssetPaths = assetPaths;
 		}
 
 		public void AddListener(IAssetChangeNotifications listener)
