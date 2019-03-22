@@ -13,7 +13,7 @@ If the editor window queries the database all the time, it will be slow. Instead
 
 - Add this project to your code.
 - Implement the `AssetChangeTracker.IListener` interface in one of your classes.
-- Register an instance of your class using the `GlobalAssetChangeTracker.AddListener()` interface.
+- Register an instance of your class using `AssetChangeTracker.GlobalAssetChangeTracker.AddListener()`.
 
 ```
 public class ExampleListener : AssetChangeTracker.IListener
@@ -51,7 +51,7 @@ public class ExampleListener : AssetChangeTracker.IListener
 
 ExampleListener myListener = new ExampleListener;
 
-GlobalAssetChangeTracker.addListener(typeof(MyScriptableObject), exampleListener);
+AssetChangeTracker.GlobalAssetChangeTracker.addListener(typeof(MyScriptableObject), exampleListener);
 ```
 
 There is an example project available at https://github.com/falldamagestudio/AssetChangeTracker-Example.
