@@ -5,17 +5,17 @@ using UnityEngine.Assertions;
 
 namespace AssetChangeTracker
 {
-    /// <summary>
-    /// AssetChangeTracker implementation.
-    /// This class handles tracking of all asset database changes, performs any asset database API calls necessary,
-    ///   and routes changes to more specialized TrackedAssetType objects.
-    /// </summary>
+	/// <summary>
+	/// AssetChangeTracker implementation.
+	/// This class handles tracking of all asset database changes, performs any asset database API calls necessary,
+	///   and routes changes to more specialized TrackedAssetType objects.
+	/// </summary>
 	public class AssetChangeTracker
 	{
-        /// <summary>
-        /// Asset database API specification.
-        /// Abstracting this out of the AssetChangeTracker makes it easy to test without a need for the AssetDatabase to have particular contents.
-        /// </summary>
+		/// <summary>
+		/// Asset database API specification.
+		/// Abstracting this out of the AssetChangeTracker makes it easy to test without a need for the AssetDatabase to have particular contents.
+		/// </summary>
 		public interface IAssetDatabaseAccess
 		{
 			HashSet<string> GetAssetsOfType(Type assetType);
@@ -35,26 +35,26 @@ namespace AssetChangeTracker
 
 		public void AddListener(Type assetType, IListener listener)
 		{
-            if (!trackedAssetTypes.ContainsKey(assetType))
-            {
-                // This is the first listener for this particular asset type; create a tracker for the type
-                trackedAssetTypes[assetType] = new TrackedAssetType(assetType, assetDatabaseAccess.GetAssetsOfType(assetType));
-            }
+			if (!trackedAssetTypes.ContainsKey(assetType))
+			{
+				// This is the first listener for this particular asset type; create a tracker for the type
+				trackedAssetTypes[assetType] = new TrackedAssetType(assetType, assetDatabaseAccess.GetAssetsOfType(assetType));
+			}
 
-            // Add listener to tracker
-            trackedAssetTypes[assetType].AddListener(listener);
+			// Add listener to tracker
+			trackedAssetTypes[assetType].AddListener(listener);
 		}
 
 		public void RemoveListener(Type assetType, IListener listener)
 		{
 			Assert.IsTrue(trackedAssetTypes.ContainsKey(assetType), string.Format("Attempted to remove a listener for type {0} which is not currently registered. This is not allowed.", assetType));
 
-            // Remove listener from tracker
-            if (!trackedAssetTypes[assetType].RemoveListener(listener))
-            {
-                // There are no more listeneres for this particular asset type; remove the tracker as well
-                trackedAssetTypes.Remove(assetType);
-            }
+			// Remove listener from tracker
+			if (!trackedAssetTypes[assetType].RemoveListener(listener))
+			{
+				// There are no more listeneres for this particular asset type; remove the tracker as well
+				trackedAssetTypes.Remove(assetType);
+			}
 		}
 
 		public void OnReimported(string[] assetPaths)
