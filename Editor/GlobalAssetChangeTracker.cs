@@ -45,7 +45,7 @@ namespace AssetChangeTracker
 		/// Multiple different listeners can be added for the same type.
 		/// The same listener cannot be added twice for the same type.
 		/// </summary>
-		public static void AddListener(Type assetType, IListener listener)
+		public static void AddListener(Type assetType, IAssetChangeListener listener)
 		{
 			Assert.IsNotNull(assetType);
 			Assert.IsNotNull(listener);
@@ -56,7 +56,7 @@ namespace AssetChangeTracker
 		/// <summary>
 		/// Removes a listener object from the AssetChangeTracker.
 		/// </summary>
-		public static void RemoveListener(Type assetType, IListener listener)
+		public static void RemoveListener(Type assetType, IAssetChangeListener listener)
 		{
 			Assert.IsNotNull(assetType);
 			Assert.IsNotNull(listener);

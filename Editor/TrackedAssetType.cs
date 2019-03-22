@@ -10,7 +10,7 @@ namespace AssetChangeTracker
 	public class TrackedAssetType
 	{
 		private HashSet<string> AssetPaths = new HashSet<string>();
-		private HashSet<IListener> Listeners = new HashSet<IListener>();
+		private HashSet<IAssetChangeListener> Listeners = new HashSet<IAssetChangeListener>();
 
 		/// <param name="assetType">Type of asset to track.</param>
 		/// <param name="assetPaths">Set of paths to assets that exist at the time the tracker is created.</param>
@@ -22,7 +22,7 @@ namespace AssetChangeTracker
 		/// <summary>
 		/// Adds listener for this asset type.
 		/// </summary>
-		public void AddListener(IListener listener)
+		public void AddListener(IAssetChangeListener listener)
 		{
 			Assert.IsFalse(Listeners.Contains(listener), "Attempted to add the same listener twice for the same type. This is not allowed.");
 			Listeners.Add(listener);
@@ -34,7 +34,7 @@ namespace AssetChangeTracker
 		/// Removes listener for this asset type.
 		/// Returns true if there still are other listeners present, or false if there are none.
 		/// </summary>
-		public bool RemoveListener(IListener listener)
+		public bool RemoveListener(IAssetChangeListener listener)
 		{
 			Assert.IsTrue(Listeners.Contains(listener), "Attempted to remove a listener for type which is not currently registered. This is not allowed.");
 			Listeners.Remove(listener);
@@ -49,12 +49,12 @@ namespace AssetChangeTracker
 			{
 				AssetPaths.Add(assetPath);
 
-				foreach (IListener listener in Listeners)
+				foreach (IAssetChangeListener listener in Listeners)
 					listener.OnAdded(assetPath);
 			}
 			else
 			{
-				foreach (IListener listener in Listeners)
+				foreach (IAssetChangeListener listener in Listeners)
 					listener.OnChanged(assetPath);
 			}
 		}
@@ -64,7 +64,7 @@ namespace AssetChangeTracker
 			AssetPaths.Remove(assetSourcePath);
 			AssetPaths.Add(assetTargetPath);
 
-			foreach (IListener listener in Listeners)
+			foreach (IAssetChangeListener listener in Listeners)
 				listener.OnMoved(assetSourcePath, assetTargetPath);
 		}
 
@@ -76,7 +76,7 @@ namespace AssetChangeTracker
 			{
 				AssetPaths.Remove(assetPath);
 
-				foreach (IListener listener in Listeners)
+				foreach (IAssetChangeListener listener in Listeners)
 					listener.OnDeleted(assetPath);
 			}
 		}

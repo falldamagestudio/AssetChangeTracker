@@ -6,7 +6,7 @@ namespace AssetChangeTracker
 	/// Asset database activity listener interface.
 	/// This provides a minimal API that allows monitoring of changes to a set of assets of a given type.
 	/// </summary>
-	public interface IListener
+	public interface IAssetChangeListener
 	{
 		/// <summary>
 		/// Called when a listener is registered.

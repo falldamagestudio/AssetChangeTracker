@@ -33,7 +33,7 @@ namespace AssetChangeTracker
 			this.assetDatabaseAccess = assetDatabaseAccess;
 		}
 
-		public void AddListener(Type assetType, IListener listener)
+		public void AddListener(Type assetType, IAssetChangeListener listener)
 		{
 			if (!trackedAssetTypes.ContainsKey(assetType))
 			{
@@ -45,7 +45,7 @@ namespace AssetChangeTracker
 			trackedAssetTypes[assetType].AddListener(listener);
 		}
 
-		public void RemoveListener(Type assetType, IListener listener)
+		public void RemoveListener(Type assetType, IAssetChangeListener listener)
 		{
 			Assert.IsTrue(trackedAssetTypes.ContainsKey(assetType), string.Format("Attempted to remove a listener for type {0} which is not currently registered. This is not allowed.", assetType));
 

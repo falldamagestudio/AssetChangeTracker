@@ -12,11 +12,11 @@ If the editor window queries the database all the time, it will be slow. Instead
 ## How to use
 
 - Add this project to your code.
-- Implement the `AssetChangeTracker.IListener` interface in one of your classes.
+- Implement the `AssetChangeTracker.IAssetChangeListener` interface in one of your classes.
 - Register an instance of your class using `AssetChangeTracker.GlobalAssetChangeTracker.AddListener()`.
 
 ```
-public class ExampleListener : AssetChangeTracker.IListener
+public class ExampleListener : AssetChangeTracker.IAssetChangeListener
 {
     public void OnExists(HashSet<string> assetPaths)
     {

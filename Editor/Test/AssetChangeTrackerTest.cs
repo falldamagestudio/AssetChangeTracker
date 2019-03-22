@@ -14,7 +14,7 @@ namespace AssetChangeTracker
         {
         }
 
-        private class TestListener : IListener
+        private class TestListener : IAssetChangeListener
         {
             public HashSet<string> AssetPaths = new HashSet<string>();
             public int OnExistsCallCount = 0;
