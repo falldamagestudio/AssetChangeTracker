@@ -6,9 +6,15 @@ using UnityEngine.Assertions;
 
 namespace AssetChangeTracker
 {
+    /// <summary>
+    /// Application-wide interface for the AssetChangeTracker
+    /// </summary>
 	public class GlobalAssetChangeTracker : AssetPostprocessor
 	{
 
+        /// <summary>
+        /// Unity API adapter: asset queries are routed to the AssetDatabase.
+        /// </summary>
 		private class AssetDatabaseAccess : AssetChangeTracker.IAssetDatabaseAccess
 		{
 			public HashSet<string> GetAssetsOfType(Type assetType)
@@ -32,7 +38,14 @@ namespace AssetChangeTracker
 
 		private static AssetChangeTracker Instance = new AssetChangeTracker(new AssetDatabaseAccess());
 
-		public static void AddListener(Type assetType, IListener listener)
+        /// <summary>
+        /// Adds a listener object to the AssetChangeTracker.
+        ///
+        /// The same listener can be added for several different types.
+        /// Multiple different listeners can be added for the same type.
+        /// The same listener cannot be added twice for the same type.
+        /// </summary>
+        public static void AddListener(Type assetType, IListener listener)
 		{
 			Assert.IsNotNull(assetType);
 			Assert.IsNotNull(listener);
@@ -40,6 +53,9 @@ namespace AssetChangeTracker
 			Instance.AddListener(assetType, listener);
 		}
 
+        /// <summary>
+        /// Removes a listener object from the AssetChangeTracker.
+        /// </summary>
 		public static void RemoveListener(Type assetType, IListener listener)
 		{
 			Assert.IsNotNull(assetType);
@@ -49,6 +65,9 @@ namespace AssetChangeTracker
 		}
 
 
+        /// <summary>
+        /// Unity API callback: This is called whenever the set of assets change - regardless of type.
+        /// </summary>
 		private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
 		{
 			Assert.IsNotNull(importedAssets);
