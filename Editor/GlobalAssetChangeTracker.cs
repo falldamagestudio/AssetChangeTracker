@@ -32,7 +32,7 @@ namespace AssetChangeTracker
 
 		private static AssetChangeTracker Instance = new AssetChangeTracker(new AssetDatabaseAccess());
 
-		public static void AddListener(Type assetType, TrackedAssetType.IAssetChangeNotifications listener)
+		public static void AddListener(Type assetType, IListener listener)
 		{
 			Assert.IsNotNull(assetType);
 			Assert.IsNotNull(listener);
@@ -40,7 +40,7 @@ namespace AssetChangeTracker
 			Instance.AddListener(assetType, listener);
 		}
 
-		public static void RemoveListener(Type assetType, TrackedAssetType.IAssetChangeNotifications listener)
+		public static void RemoveListener(Type assetType, IListener listener)
 		{
 			Assert.IsNotNull(assetType);
 			Assert.IsNotNull(listener);
